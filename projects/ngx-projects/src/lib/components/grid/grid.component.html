@@ -1,0 +1,12 @@
+<gridster [options]="options">
+    <gridster-item [item]="item" *ngFor="let item of dashboard">
+      <div class="button-holder">
+        <lib-projects></lib-projects>
+      </div>
+    </gridster-item>
+    <gridster-item [item]="item" *ngFor="let item of dashboardform">
+      <div class="button-holder">
+        <lib-form></lib-form>
+      </div>
+    </gridster-item>
+  </gridster>

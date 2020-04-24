@@ -1,14 +1,27 @@
 {
-  "name": "wsp-project",
+  "name": "@labshare/ngx-projects",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build": "ng build @labshare/ngx-projects",
+    "build:prod": "ng build @labshare/ngx-projects --prod",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "coverage": "ng test --codeCoverage=true --watch=false",
+    "coverage:watch": "ng test --codeCoverage=true",
+    "e2e": "ng e2e",
+    "lint": "npm run prettier:check && ng lint",
+    "lint:fix": "ng lint -- --fix && npm run prettier:fix",
+    "prettier": "prettier \"**/*.ts\" \"**/*.js\" \"**/*.md\"",
+    "prettier:check": "npm run prettier -- -l",
+    "prettier:cli": "npm run prettier -- -c",
+    "prettier:fix": "npm run prettier:cli -- --write",
+    "semantic-release": "semantic-release",
+    "test": "ng test --watch=false"
   },
+  "packageDependencies": [
+    "@labshare/shell-ui"
+  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.1",
@@ -19,11 +32,24 @@
     "@angular/platform-browser": "~9.1.1",
     "@angular/platform-browser-dynamic": "~9.1.1",
     "@angular/router": "~9.1.1",
+    "@labshare/ls-font": "^1.0.0",
+    "@labshare/ngx-base-components": "^1.2.1",
+    "@labshare/ngx-core-services": "^2.0.0",
+    "@labshare/ngx-framework-components": "^2.0.11",
+    "@labshare/shell-ui": "^2.1.0",
+    "@ngx-formly/bootstrap": "^5.5.15",
+    "@ngx-formly/core": "^5.5.15",
+    "angular-gridster2": "^9.1.0",
+    "bootstrap": "^4.4.1",
+    "immutable-rxjs": "^1.0.2",
+    "ngx-infinite-scroll": "^8.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.2",
+    "@angular-devkit/build-ng-packagr": "~0.901.2",
     "@angular/cli": "~9.1.1",
     "@angular/compiler-cli": "~9.1.1",
     "@angular/language-service": "~9.1.1",
@@ -38,9 +64,62 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~3.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "ng-packagr": "^9.0.0",
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/exec": "^4.0.0",
+    "@semantic-release/git": "^8.0.0",
+    "cordova": "~9.0.0",
+    "electron": "~5.0.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
+    "semantic-release": "^17.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,js,css,md,html}": "npm run lint:fix",
+    "relative": true
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "pkgRoot": "dist"
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "cp ./dist/package.json ./projects/ngx-projects/package.json"
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "projects/ngx-projects/package.json"
+          ]
+        }
+      ]
+    ]
   }
 }

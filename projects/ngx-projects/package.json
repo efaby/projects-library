@@ -1,0 +1,13 @@
+{
+  "name": "@labshare/ngx-projects",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^9.1.2",
+    "@angular/core": "^9.1.2",
+    "tslib": "^1.10.0",
+    "@labshare/ngx-core-services": "^2.0.1",
+    "@labshare/ngx-framework-components": "^2.0.11",
+    "@labshare/ngx-base-components": "^1.2.1",
+    "immutable-rxjs": "^1.0.1"
+  }
+}

@@ -2,5 +2,208 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "@labshare/ngx-projects": {
+      "projectType": "library",
+      "root": "projects/ngx-projects",
+      "sourceRoot": "projects/ngx-projects/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-projects/tsconfig.lib.json",
+            "project": "projects/ngx-projects/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-projects/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-projects/src/test.ts",
+            "tsConfig": "projects/ngx-projects/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-projects/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-projects/tsconfig.lib.json",
+              "projects/ngx-projects/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-projects-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/ngx-projects-app",
+      "sourceRoot": "projects/ngx-projects-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@labshare/shell-ui:browser",
+          "options": {
+            "outputPath": "dist/ngx-projects-app",
+            "index": "projects/ngx-projects-app/src/index.html",
+            "main": "projects/ngx-projects-app/src/main.ts",
+            "polyfills": "projects/ngx-projects-app/src/polyfills.ts",
+            "tsConfig": "projects/ngx-projects-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/ngx-projects-app/src/favicon.ico",
+              "projects/ngx-projects-app/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-projects-app/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ngx-projects-app/src/environments/environment.ts",
+                  "with": "projects/ngx-projects-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@labshare/shell-ui:dev-server",
+          "options": {
+            "browserTarget": "ngx-projects-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-projects-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-projects-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-projects-app/src/test.ts",
+            "polyfills": "projects/ngx-projects-app/src/polyfills.ts",
+            "tsConfig": "projects/ngx-projects-app/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-projects-app/karma.conf.js",
+            "assets": [
+              "projects/ngx-projects-app/src/favicon.ico",
+              "projects/ngx-projects-app/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-projects-app/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-projects-app/tsconfig.app.json",
+              "projects/ngx-projects-app/tsconfig.spec.json",
+              "projects/ngx-projects-app/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/ngx-projects-app/e2e/protractor.conf.js",
+            "devServerTarget": "ngx-projects-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-projects-app:serve:production"
+            }
+          }
+        },
+        "electron": {
+          "builder": "@labshare/shell-ui:electron",
+          "options": {
+            "browserTarget": "ngx-storage-app:build",
+            "baseHref": "./"
+          }
+        },
+        "pack-electron": {
+          "builder": "@labshare/shell-ui:pack-electron",
+          "options": {
+            "browserTarget": "ngx-storage-app:build",
+            "outputPath": "dist/ngx-storage-app/electron",
+            "plaform": "mac",
+            "baseHref": "./"
+          }
+        },
+        "pack-cordova": {
+          "builder": "@labshare/shell-ui:pack-cordova",
+          "options": {
+            "browserTarget": "ngx-storage-app:build",
+            "outputPath": "dist/ngx-storage-app/cordova",
+            "plaform": "ios",
+            "baseHref": "./",
+            "cordovaAssets": false
+          }
+        },
+        "pack-sharepoint": {
+          "builder": "@labshare/shell-ui:pack-sharepoint",
+          "options": {
+            "browserTarget": "ngx-projects-app:build",
+            "baseHref": "./",
+            "outputPath": "dist/ngx-projects-app/sharepoint",
+            "spVersion": "online",
+            "sharepoint": {
+              "solutionName": "ngx-projects-app",
+              "solutionGuid": "4c874b09-7940-4c1c-9203-d1b6c3f1d74d",
+              "zippedPackage": "solution/ngx-projects-app.sppkg",
+              "webPartGuid": "c3ad6298-a085-4269-9b94-357640cdcf69",
+              "webPartAlias": "ngx-projects-app",
+              "webPartTitle": "ngx-projects-app",
+              "webPartDescription": "ngx-projects-app description",
+              "webPartPropertiesDescription": "ngx-projects-app properties description"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "ngx-projects-app"
 }

@@ -1,0 +1,28 @@
+<div class="main-content">
+    <h2>list Projects!</h2>
+    <form role="form" novalidate [formGroup]="form">
+      <formly-form [form]="form" [fields]="fields" [model]="model" [options]="options"></formly-form>
+    </form>
+  </div>
+  <div
+    class="content"
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+    [scrollWindow]="false"
+  >
+    <div class="main-content">
+      <div *ngFor="let item of todos" class="card">
+        <div class="card-body pointer" (click)="onSelectProject(item)">
+          <h5>{{ item.title }}</h5>
+          <small><strong>Id: </strong>{{ item.id }}</small
+          ><br />
+          <small><strong>Completed: </strong></small>
+          <span class="badge badge-success" *ngIf="item.completed">{{ item.completed }}</span>
+          <span class="badge badge-danger" *ngIf="!item.completed">{{ item.completed }}</span>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
